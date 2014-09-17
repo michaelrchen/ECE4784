@@ -30,14 +30,28 @@ xlabel('Time (ms)')
 ylabel('g_{Na}/g_K')
 
 %% step pulse stimulation
+% initialization
+V_m = V_rest;
+t = .5;
+
+% gating variables
+a_m = .1*((25-V_m)/exp((25-V_m)/10)-1);
+B_m = 4*exp(-V_m/18);
+a_n = .01*((10-V_m)/(exp((10-V_m)/10)-1));
+B_n = .125*exp(-V_m/80);
+a_h = .07*exp(-V_m/20);
+B_h = 1/(exp((30-V_m)/10)+1);
+
+% state variables
+m = (-a_m/(a_m+B_m))*exp(t*(-a_m-B_m))+(a_m/(a_m+B_m));
+n = (-a_n/(a_n+B_n))*exp(t*(-a_n-B_n))+(a_n/(a_n+B_n));
+h = (-a_h/(a_h+B_h))*exp(t*(-a_h-B_h))+(a_h/(a_h+B_h));
+
 % determine currents
 I_Na = m^3*g_Na*h*(V_m-E_Na);
 I_K = n^4*g_K*(V_m-E_K);
 I_L = g_L*(V_m-E_L);
-I_ion(1:.5:10) = 0-I_K-I_Na-I_L;
-I_ion(11:.5:11.5) = .005-I_K-I_Na-I_L;
-I_ion(12:.5:101) = 0-I_K-I_Na-I_L;
-
+I_ion = I-I_K-I_Na-I_L;
 
 %% constant stimulation
 % determine currents
