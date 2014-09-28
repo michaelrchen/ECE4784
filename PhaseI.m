@@ -8,7 +8,7 @@ t = 0:dt:100;
 
 % stimulation values
 I = 50;
-t_s = 100*1/dt;
+t_s = 5*1/dt; %change # before 1/dt to anything <= max(t)
 
 % constants
 gbar_K = 36;
